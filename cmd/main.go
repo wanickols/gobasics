@@ -1,39 +1,35 @@
 package main
 
-import "fmt"
+//Concurrency Example
+import (
+	"fmt"
+	"sync"
+	"time"
+)
 
-type electricEngine struct {
-	mpkwh uint8
-	kwh   uint8
-}
-
-func (e electricEngine) milesLeft() uint8 {
-	return e.mpkwh * e.kwh
-}
-
-type gasEngine struct {
-	mpg     uint8
-	gallons uint8
-}
-
-func (e gasEngine) milesLeft() uint8 {
-	return e.gallons * e.mpg
-}
-
-type engine interface {
-	milesLeft() uint8
-}
-
-func canMakeIt(e engine, miles uint8) {
-	if miles <= e.milesLeft() {
-		fmt.Println("You can make it!")
-	} else {
-		fmt.Println("You can't do it kid. You just can't")
-	}
-}
+var mtx = sync.Mutex{}
+var wg = sync.WaitGroup{}
+var dbData = []string{"id1", "id2", "id3", "id4", "id5"}
+var results = []string{}
 
 func main() {
-	var myEngine electricEngine = electricEngine{25, 15}
-	canMakeIt(myEngine, 50)
+	t0 := time.Now()
+	for i := 0; i < len(dbData); i++ {
+		wg.Add(1)
+		go dbCall(i)
+	}
 
+	wg.Wait()
+	fmt.Printf("\nTotal excecution time: %v", time.Since(t0))
+	fmt.Printf("\nThe results are %v", results)
+}
+
+func dbCall(i int) {
+	var delay float32 = 2000
+	time.Sleep((time.Duration(delay) * time.Millisecond))
+	fmt.Println("The result from thie database is:", dbData[i])
+	mtx.Lock()
+	results = append(results, dbData[i])
+	mtx.Unlock()
+	wg.Done()
 }
