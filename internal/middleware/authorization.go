@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"errors"
-	"github/wanickols/gobasics/api"
 	"net/http"
 
+	"github/wanickols/gobasics/api"
+	"github/wanickols/gobasics/internal/tools"
+
 	log "github.com/sirupsen/logrus"
-	"github.com/wanickols/gobasics/api"
-	"github.com/wanickols/gobasics/internals/tools"
 )
 
 var UnAuthorizedError = errors.New("Invalid username or token")
@@ -37,10 +37,9 @@ func Authorization(next http.Handler) http.Handler {
 		}
 
 		//Query database
-		var loginDetails *tools.loginDetails
-		loginDetails = (*database).GetUserLoginDetails(username)
+		var loginDetails *tools.LoginDetails = (*database).GetUserLoginDetails(username)
 
-		if loginDetails == nil || (token != (*tokenDetails).AuthToken) {
+		if loginDetails == nil || (token != (*loginDetails).AuthToken) {
 			log.Error(UnAuthorizedError)
 			api.RequestErrorHandler(w, UnAuthorizedError)
 			return

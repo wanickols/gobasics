@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github/wanickols/gobasics/internal/handlers"
+
 	"github.com/go-chi/chi"
 	log "github.com/sirupsen/logrus"
-	"github.com/wanickols/gobasics/internal/handlers"
 )
 
 func main() {

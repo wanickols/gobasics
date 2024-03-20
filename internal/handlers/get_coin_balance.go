@@ -2,18 +2,18 @@ package handlers
 
 import (
 	"encoding/json"
-	"github/wanickols/gobasics/api"
 	"net/http"
+
+	"github/wanickols/gobasics/api"
+	"github/wanickols/gobasics/internal/tools"
 
 	"github.com/gorilla/schema"
 	log "github.com/sirupsen/logrus"
-	"github.com/wanickols/gobasics/api"
-	"github.com/wanickols/gobasics/internal/tools"
 )
 
 func GetCoinBalance(w http.ResponseWriter, r *http.Request) {
 	var paramas = api.CoinBalanceParams{}
-	var decoder *schema.decoder = schema.NewDecoder
+	var decoder *schema.Decoder = schema.NewDecoder()
 	var err error
 
 	err = decoder.Decode(&paramas, r.URL.Query())

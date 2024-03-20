@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/go-chi/chi"
 	chimiddle "github.com/go-chi/chi/middleware"
-	"github.com/wanickols/gobasics/internal/middleware"
+	"github/wanickols/gobasics/internal/middleware"
 )
 
 // Captial function is public
